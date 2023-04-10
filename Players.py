@@ -18,7 +18,7 @@ class Players(Instance):
         else:
             LP = self.GetLocalPlayer()
             return workspace.FindFirstChild(LP.GetName())
-    def GetAllPlayers(self) -> list[Player]:
+    def GetAllPlayers(self) -> list:
         plrs = []
         for players in self.GetChildren():
             plrs.append(players)
