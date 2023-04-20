@@ -1,6 +1,7 @@
 from .Exploit import roblox
 import struct
 import pymem
+from .offsets import instance_offsets
 def GetDataModel() -> int:
     print(">>>>> Starting DataModel scan ! <<<<<")
     guiroot_pattern = b"\\x47\\x75\\x69\\x52\\x6F\\x6F\\x74\\x00\\x47\\x75\\x69\\x49\\x74\\x65\\x6D"
@@ -79,7 +80,7 @@ getPropertyFuncs = dict()
 
 class NameMap():
     def __init__(self):
-        self.addr = roblox.getAddressFromName("RobloxPlayerBeta.exe+3A66EC0")
+        self.addr = roblox.getAddressFromName(instance_offsets["name_map"])
         self.namelist = {}
         while roblox.Program.read_int(self.addr) != 0:
             self.namelist[roblox.ReadInstaceString(self.addr)] = roblox.Program.read_int(self.addr)

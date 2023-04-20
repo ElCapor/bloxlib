@@ -1,6 +1,6 @@
 from __future__ import annotations
 from .Exploit import roblox
-
+from .offsets import bounded_functions_offsets
 rbx_sec_enum = {
 	-10:None,
 	-1:None,
@@ -16,24 +16,31 @@ rbx_sec_enum = {
 }
 
 
-class BoundedFunc:
+class BoundedFunc():
 	def __init__(self, Address = 0) -> None:
 		self.addr = Address
 	def GetAddress(self) -> int:
 		return self.addr
 	def GetName(self) -> str:
 		addr = self.GetAddress()
-		return roblox.ReadNormalString(roblox.DRP(addr + 0x4))
+		return roblox.ReadNormalString(roblox.DRP(addr + bounded_functions_offsets["name"]))
 	def GetFunc(self) -> int:
-		return roblox.DRP(self.addr + 0x40)
+		return roblox.DRP(self.addr + bounded_functions_offsets["function"])
 	def GetSecurity(self) -> int:
-		return roblox.Program.read_int(self.addr + 0x1C)
+		return roblox.Program.read_int(self.addr + bounded_functions_offsets["security"])
 	def SetSecurity(self,new_security):
 		if type(new_security) == int:
-			roblox.Program.write_int(self.addr + 0x1C, new_security)
+			roblox.Program.write_int(self.addr + bounded_functions_offsets["security"], new_security)
 		else:
 			print("Correct syntax: SetSecurity(int)")
 	def GetSecurityName(self) -> str:
-		return rbx_sec_enum[roblox.Program.read_int(self.addr + 0x1C)]
+		return rbx_sec_enum[roblox.Program.read_int(self.addr + bounded_functions_offsets["security"])]
+
+
+class BoundedYieldFunc(BoundedFunc):
+	def __init__(self, Address=0) -> None:
+		super().__init__(Address)
+	def GetFunc(self) -> int:
+		return roblox.DRP(self.addr + 0x38)
 
 __all__ = ["BoundedFunc"]

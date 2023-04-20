@@ -5,7 +5,7 @@ from .BoundedFunc import BoundedFunc
 from .EventDesc import EventDesc
 from .Memory import float_to_hex, getPropertyFuncs, nameMap
 from .GetSetImpl import GetSetImpl
-
+from .offsets import instance_offsets, property_descriptor_offsets
 __all__ = [
     "shared_prop",
     "supported_returntypes",
@@ -71,9 +71,9 @@ class Instance:
 		return self.addr
 	def GetName(self) -> str:
 		addr = self.getAddress()
-		return roblox.ReadInstaceString(addr + 0x2C)
+		return roblox.ReadInstaceString(addr + instance_offsets["name"])
 	def HasChildren(self) -> bool:
-		child_list = roblox.DRP(self.addr + 0x30)
+		child_list = roblox.DRP(self.addr + instance_offsets["childlist"])
 		if child_list == 0:
 			return False
 		else:
@@ -81,7 +81,7 @@ class Instance:
 	def GetChildren(self) -> list[Instance]:
 		children = []
 		if self.addr != 0:
-			child_list = roblox.DRP(self.addr + 0x30)
+			child_list = roblox.DRP(self.addr + instance_offsets["childlist"])
 			if child_list != 0:
 				child_begin = roblox.DRP(child_list)
 				end_child = roblox.DRP(child_list + 0x4)
@@ -94,8 +94,8 @@ class Instance:
 						child_begin = child_begin + 8
 		return children
 	def GetParent(self) -> Instance:
-		if roblox.DRP(self.addr + 0x3C) != 0:
-			return Instance(roblox.DRP(self.addr + 0x3C))
+		if roblox.DRP(self.addr + instance_offsets["parent"]) != 0:
+			return Instance(roblox.DRP(self.addr + instance_offsets["parent"]))
 		return Instance(0)
 	def FindFirstChild(self, name) -> Instance:
 		for child in self.GetChildren():
@@ -112,11 +112,11 @@ class Instance:
 				return child
 		return Instance(0)
 	def GetClassDescriptor(self) -> list[Instance]:
-		classDescriptor = roblox.DRP(self.addr + 0xC)
+		classDescriptor = roblox.DRP(self.addr + instance_offsets["class_descriptor"])
 		return classDescriptor
 	def GetPropertyDescriptors(self) -> list[PropertyDescriptor]:
-		prop_begin = roblox.DRP(self.GetClassDescriptor() + 0x18)
-		prop_end = roblox.DRP(self.GetClassDescriptor() + 0x18 + 0x4)
+		prop_begin = roblox.DRP(self.GetClassDescriptor() + instance_offsets["property_descriptor"])
+		prop_end = roblox.DRP(self.GetClassDescriptor() + instance_offsets["property_descriptor"] + 0x4)
 		children = []
 		if prop_begin == 0 or prop_end == 0:
 			return []
@@ -127,8 +127,8 @@ class Instance:
 			prop_begin += 4
 		return children
 	def GetEventDescs(self) -> list[EventDesc]:
-		prop_begin = roblox.DRP(self.GetClassDescriptor() + 0x78)
-		prop_end = roblox.DRP(self.GetClassDescriptor() + 0x78 + 0x4)
+		prop_begin = roblox.DRP(self.GetClassDescriptor() + instance_offsets["event_descriptor"])
+		prop_end = roblox.DRP(self.GetClassDescriptor() + instance_offsets["event_descriptor"] + 0x4)
 		children = []
 		if prop_begin == 0 or prop_end == 0:
 			return []
@@ -149,8 +149,8 @@ class Instance:
 				return prop
 		return 0
 	def GetBoundedFuncs(self) -> list[BoundedFunc]:
-		prop_begin = roblox.DRP(self.GetClassDescriptor() + 0xD8)
-		prop_end = roblox.DRP(self.GetClassDescriptor() + 0xD8 + 0x4)
+		prop_begin = roblox.DRP(self.GetClassDescriptor() + instance_offsets["boundedfunctions"])
+		prop_end = roblox.DRP(self.GetClassDescriptor() + instance_offsets["boundedfunctions"] + 0x4)
 		children = []
 		if prop_begin == 0 or prop_end == 0:
 			return []
@@ -169,10 +169,10 @@ class Instance:
 		return roblox.ReadInstaceString(self.GetClassDescriptor() + 0x4)
 	def GetProperty(self,name):
 		propertyDescriptor = self.GetPropertyDescriptor(name)
-		ReturnType = roblox.ReadInstaceString(roblox.DRP(propertyDescriptor.GetAddress() + 0x24)+0x4)
+		ReturnType = roblox.ReadInstaceString(roblox.DRP(propertyDescriptor.GetAddress() + property_descriptor_offsets["returntype"])+0x4)
 		if ReturnType in getPropertyFuncs:
 			getfunc = getPropertyFuncs[ReturnType]
-			getfunc.write(self.addr - 0xC, propertyDescriptor.GetSet().Get())
+			getfunc.write(self.addr, propertyDescriptor.GetSet().Get())
 			return getfunc.call()
 		else:
 			return ReturnType + " Not Implemented"
@@ -237,7 +237,7 @@ class Instance:
 		
 		return returnValue
 	def new(self,className : str) -> Instance:
-		FunctionToCall = roblox.getAddressFromName('RobloxPlayerBeta.exe+451210')
+		FunctionToCall = roblox.getAddressFromName(instance_offsets["new"])
 		NewMemoryRegion = roblox.Program.allocate(100)
 		returnStruct = roblox.Program.allocate(4)
 		NewMemAddress = NewMemoryRegion
