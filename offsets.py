@@ -6,8 +6,8 @@ instance_offsets = {
     "property_descriptor":0x18,
     "event_descriptor":0x78,
     "boundedfunctions":0xD8,
-    "new" : "RobloxPlayerBeta.exe+45C060",
-    "name_map" : "RobloxPlayerBeta.exe+3A800D8"
+    "new" : "RobloxPlayerBeta.exe+461D70",
+    "name_map" : "RobloxPlayerBeta.exe+3AE46C0"
 }
 
 property_descriptor_offsets = {
