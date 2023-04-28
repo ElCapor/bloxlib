@@ -8,8 +8,8 @@ class Highlight(Instance):
         NewMemoryRegion = roblox.Program.allocate(100)
         NewMemAddress = NewMemoryRegion
         struct = roblox.Program.allocate(12)
-        InstanceAddress = Highlight.getAddress() #Change This
-        FunctionAddress = Highlight.GetPropertyDescriptor("FillColor").GetSet().Set()
+        InstanceAddress = self.getAddress() #Change This
+        FunctionAddress = self.GetPropertyDescriptor("FillColor").GetSet().Set()
         roblox.Program.write_float(struct, newColor.x)
         roblox.Program.write_float(struct + 4, newColor.y)
         roblox.Program.write_float(struct + 8, newColor.z)
