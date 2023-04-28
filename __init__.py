@@ -9,8 +9,5 @@ from . import BoundedFunc
 from . import Player
 from . import Players
 from . import Camera
-
-__all__ = ["Exploit", "Memory", "instance", "ClassDescriptor", "GetSetImpl", "PropertyDescriptor", "EventDesc", "BoundedFunc", "Player", "Players", "Camera"]
-
-
-print(__all__)
+from . import Highlight
+__all__ = ["Exploit", "Memory", "instance", "ClassDescriptor", "GetSetImpl", "PropertyDescriptor", "EventDesc", "BoundedFunc", "Player", "Players", "Camera", "Highlight"]
