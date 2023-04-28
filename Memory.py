@@ -102,12 +102,16 @@ def SetupOptimizations():
      getString = Call0Arg("string")
      getVector3 = Call0Arg("Vector3")
      getInt64 = Call0Arg("int64")
+     getObject = Call0Arg("Object")
+
 
      getPropertyFuncs[""] = getNormal
      getPropertyFuncs["float"] = getFloat
      getPropertyFuncs["string"]= getString
      getPropertyFuncs["Vector3"] = getVector3
      getPropertyFuncs["int64"] = getInt64
+     getPropertyFuncs["Object"] = getObject
+
 
      
      for func in getPropertyFuncs:

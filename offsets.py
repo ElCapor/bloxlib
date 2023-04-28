@@ -12,7 +12,7 @@ instance_offsets = {
 
 property_descriptor_offsets = {
     "name": 0x4,
-    "returnType" : 0x24,
+    "returntype" : 0x24,
     "security" : 0x1C,
     "GetSet" : 0x30,
 }

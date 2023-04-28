@@ -172,7 +172,11 @@ class Instance:
 		ReturnType = roblox.ReadInstaceString(roblox.DRP(propertyDescriptor.GetAddress() + property_descriptor_offsets["returntype"])+0x4)
 		if ReturnType in getPropertyFuncs:
 			getfunc = getPropertyFuncs[ReturnType]
-			getfunc.write(self.addr, propertyDescriptor.GetSet().Get())
+			if name == "Character":
+				FunctionAddress = roblox.DRP(roblox.DRP(self.GetPropertyDescriptor(name).GetAddress() + 0x34) + 0x8)
+				getfunc.write(self.addr, FunctionAddress)
+			else:
+				getfunc.write(self.addr, propertyDescriptor.GetSet().Get())
 			return getfunc.call()
 		else:
 			return ReturnType + " Not Implemented"
