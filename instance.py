@@ -84,14 +84,14 @@ class Instance:
 			child_list = roblox.DRP(self.addr + instance_offsets["childlist"])
 			if child_list != 0:
 				child_begin = roblox.DRP(child_list)
-				end_child = roblox.DRP(child_list + 0x4)
+				end_child = roblox.DRP(child_list + 0x8)
 				
 				
 				while child_begin != end_child:
 					current_instance = roblox.DRP(child_begin)
 					if current_instance !=0:
 						children.append(Instance(current_instance))
-						child_begin = child_begin + 8
+						child_begin = child_begin + 16
 		return children
 	def GetParent(self) -> Instance:
 		if roblox.DRP(self.addr + instance_offsets["parent"]) != 0:
@@ -166,7 +166,7 @@ class Instance:
 				return func
 		return 0
 	def GetClassName(self) -> str:
-		return roblox.ReadInstaceString(self.GetClassDescriptor() + 0x4)
+		return roblox.ReadInstaceString(self.GetClassDescriptor() + 0x8)
 	def GetProperty(self,name):
 		propertyDescriptor = self.GetPropertyDescriptor(name)
 		ReturnType = roblox.ReadInstaceString(roblox.DRP(propertyDescriptor.GetAddress() + property_descriptor_offsets["returntype"])+0x4)

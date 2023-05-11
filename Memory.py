@@ -7,8 +7,8 @@ def GetDataModel() -> int:
     guiroot_pattern = b"\\x47\\x75\\x69\\x52\\x6F\\x6F\\x74\\x00\\x47\\x75\\x69\\x49\\x74\\x65\\x6D"
     guiroot_address = roblox.Program.pattern_scan_all(guiroot_pattern)
     if guiroot_address != 0:
-        RawDataModel = roblox.DRP(guiroot_address + 0x28) 
-        DataModel = RawDataModel+0xC
+        RawDataModel = roblox.DRP(guiroot_address + 0x38) 
+        DataModel = RawDataModel+0x18
         return DataModel
     else:
         return 0
@@ -95,7 +95,7 @@ class NameMap():
         else:
             return 0
         
-nameMap = NameMap()
+nameMap = 0
 def SetupOptimizations():
      getFloat = Call0Arg("float")
      getNormal = Call0Arg("")
