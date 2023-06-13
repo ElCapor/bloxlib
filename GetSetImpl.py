@@ -7,7 +7,7 @@ class GetSetImpl:
 		return self.addr
 	def Get(self) -> int:
 		return roblox.DRP(self.addr + 0x8)
-	def Set(self) -> int:
+	def Set(self) -> int: # todo : add check
 		return roblox.DRP(self.addr + 0x18)
 	
 __all__ = ["GetSetImpl"]

@@ -144,6 +144,6 @@ Security Table
 
 # LICENCE
 YOU ARE NOT ALLOWED TO USE THIS IN A COMMERCIAL PROJECT UNLESS YOU BUY THE RIGHTS FROM ME (ElCapor).
-ANY CHANGE MADE TO THIS WORK MUST BE STATED
+ANY CHANGE MADE TO THIS WORK MUST BE STATED. You are not allowed to port this to any other programming language unless i allow you.
 
 <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License</a>.
